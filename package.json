@@ -1,0 +1,1 @@
+{"dependencies":{"better-sqlite3":"^13.0.3","express":"^4.21.2","ws":"^8.18.0"},"description":"Landpool — real working prototype: PNR-verified airport & concert ride-pooling with realtime chat and masked WebRTC calls.","engines":{"node":">=20"},"license":"MIT","main":"server.js","name":"landpool-app","scripts":{"dev":"node server.js","start":"node server.js"},"version":"0.1.0"}
