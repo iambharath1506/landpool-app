@@ -37,6 +37,18 @@ router.get('/inbox', requireAuth, (req, res) => {
   res.json({ invites: rows });
 });
 
+// Invites I sent that are still pending.
+router.get('/sent', requireAuth, (req, res) => {
+  const rows = db.prepare(`
+    SELECT i.*, p.mode, p.destination_zone, p.meetup_point, p.window_start, p.window_end,
+           u.name AS to_name
+    FROM invites i
+    JOIN pools p ON p.id = i.pool_id
+    JOIN users u ON u.id = i.to_user_id
+    WHERE i.from_user_id = ? AND i.status = 'pending' ORDER BY i.id DESC`).all(req.user.id);
+  res.json({ invites: rows });
+});
+
 function decide(req, res, next, status) {
   try {
     const inv = db.prepare('SELECT * FROM invites WHERE id = ?').get(Number(req.params.id));

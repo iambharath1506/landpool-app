@@ -4,7 +4,7 @@
 
 const express = require('express');
 const { db, now } = require('../db');
-const { requireAuth, getUserById, httpError } = require('../auth');
+const { requireAuth, getUserById, publicUser, httpError } = require('../auth');
 const { getPool, serializePool } = require('../helpers');
 
 const router = express.Router();
@@ -29,6 +29,24 @@ router.post('/report', requireAuth, (req, res, next) => {
     db.prepare('INSERT INTO reports (reporter_id, target_id, reason, created_at) VALUES (?,?,?,?)')
       .run(req.user.id, target.id, reason.slice(0, 500), now());
     res.json({ ok: true, message: 'Report saved. Our safety team reviews every report.' });
+  } catch (e) { next(e); }
+});
+
+// Travelers I have blocked (for the Profile tab).
+router.get('/blocks', requireAuth, (req, res) => {
+  const rows = db.prepare(`
+    SELECT u.* FROM users u
+    JOIN blocks b ON b.blocked_id = u.id
+    WHERE b.blocker_id = ? ORDER BY b.created_at DESC`).all(req.user.id);
+  res.json({ blocks: rows.map(publicUser) });
+});
+
+// Unblock a traveler.
+router.delete('/block/:userId', requireAuth, (req, res, next) => {
+  try {
+    db.prepare('DELETE FROM blocks WHERE blocker_id = ? AND blocked_id = ?')
+      .run(req.user.id, Number(req.params.userId));
+    res.json({ ok: true });
   } catch (e) { next(e); }
 });
 
