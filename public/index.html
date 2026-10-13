@@ -2,19 +2,22 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
 <title>Landpool — split the ride with people on your flight</title>
-<meta name="description" content="Landpool matches verified travelers into shared airport & concert rides. Privacy-first chat, masked calls, automatic fare split.">
+<meta name="description" content="Landpool matches verified travelers landing at the same time into shared airport and concert rides. Private chat, masked calls, automatic fare split.">
 <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="#/">🛬 Landpool <span class="proto">prototype</span></a>
-  <nav id="nav"></nav>
-</header>
 <main id="app"></main>
+<nav id="tabs" class="tabs hidden" aria-label="Primary">
+  <a href="#/pools" data-tab="pools"><span class="ti">🧭</span><span class="tl">Pools</span></a>
+  <a href="#/messages" data-tab="messages"><span class="ti">💬</span><span class="tl">Messages</span><span class="tbadge hidden" id="badge-msg"></span></a>
+  <a href="#/invites" data-tab="invites"><span class="ti">✉️</span><span class="tl">Invites</span><span class="tbadge hidden" id="badge-inv"></span></a>
+  <a href="#/profile" data-tab="profile"><span class="ti">👤</span><span class="tl">Profile</span></a>
+</nav>
 <div id="call-banner" class="call-banner hidden"></div>
-<footer class="foot">Landpool prototype — demo data only. No real flights, payments, or phone numbers.</footer>
+<div id="toasts" class="toasts" aria-live="polite"></div>
 <script src="/js/realtime.js"></script>
 <script src="/js/call.js"></script>
 <script src="/js/app.js"></script>
