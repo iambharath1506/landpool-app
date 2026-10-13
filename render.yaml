@@ -1,0 +1,16 @@
+# Render Blueprint — free deploy of Landpool (one web service, SQLite on disk).
+# NOTE: Render's free tier has NO persistent disk, so the SQLite file resets on
+# redeploy/restart. For a real pilot use a Render Disk (paid) or switch to
+# Postgres (see README "Roadmap to production").
+services:
+  - type: web
+    name: landpool-app
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: PORT
+        value: "10000"
