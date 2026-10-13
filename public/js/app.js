@@ -91,9 +91,6 @@ function markRead(kind, id) {
 
 /* ---------------- tabs ---------------- */
 
-const TAB_ROUTES = { '#/pools': 'pools', '#/messages': 'messages', '#/invites': 'invites', '#/profile': 'profile',
-  '#/pool/': 'pools', '#/pools/new': 'pools', '#/dm/': 'messages' };
-
 function showTabs(active) {
   const tabs = document.getElementById('tabs');
   const app = document.getElementById('app');
@@ -116,11 +113,6 @@ async function updateTabs() {
   bm.textContent = n > 9 ? '9+' : n;
   bm.classList.toggle('hidden', !n);
 }
-function activeTabFor(hash) {
-  for (const k of Object.keys(TAB_ROUTES)) if (hash.startsWith(k)) return TAB_ROUTES[k];
-  return null;
-}
-
 /* ---------------- auth views ---------------- */
 
 async function LoginView(app) {
@@ -196,6 +188,7 @@ async function OnboardingView(app) {
   const me = (await api('/auth/me')).user;
   App.user = me; localStorage.setItem('lp_user', JSON.stringify(me));
   if (me.verified_airport && me.verified_concert) { location.hash = '#/pools'; return; }
+  ob.step = 1;
   if (!me.verified_airport) ob.mode = 'airport';
   else if (!me.verified_concert) ob.mode = 'concert';
   renderOb(app);
